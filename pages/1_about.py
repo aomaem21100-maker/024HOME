@@ -1,8 +1,12 @@
-
 import base64
 from pathlib import Path
 
 import streamlit as st
+
+
+# =========================================================
+# PAGE CONFIG
+# =========================================================
 
 st.set_page_config(
     page_title="ผู้พัฒนา | Recommend_car",
@@ -11,350 +15,457 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Inter:wght@400;600;800&display=swap');
 
-/* =========================
-   MAIN APP
-========================= */
+# =========================================================
+# CUSTOM CSS
+# =========================================================
 
-.stApp {
-    background-color: #080808;
-    background-image:
-        radial-gradient(circle at 15% 50%, rgba(220, 38, 38, 0.18) 0%, transparent 28%),
-        radial-gradient(circle at 85% 30%, rgba(153, 27, 27, 0.18) 0%, transparent 28%),
-        radial-gradient(circle at 50% 80%, rgba(239, 68, 68, 0.08) 0%, transparent 30%);
-    background-attachment: fixed;
-}
+st.markdown(
+    """
+    <style>
 
-html, body, [class*="css"] {
-    font-family: 'Prompt', 'Inter', sans-serif;
-    color: #F5F5F5;
-}
+    /* =====================================================
+       GOOGLE FONTS
+    ===================================================== */
 
-
-/* =========================
-   HERO
-========================= */
-
-.hero {
-    text-align: center;
-    padding: 50px 20px 20px 20px;
-}
-
-.hero h1 {
-    font-family: 'Inter', 'Prompt', sans-serif;
-    font-size: 3rem;
-    font-weight: 800;
-
-    background: linear-gradient(
-        135deg,
-        #FFFFFF 0%,
-        #EF4444 50%,
-        #991B1B 100%
+    @import url(
+        'https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Inter:wght@400;600;700;800&display=swap'
     );
 
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 
-    margin-bottom: 8px;
-    letter-spacing: -0.5px;
-}
+    /* =====================================================
+       GLOBAL
+    ===================================================== */
 
-.hero p {
-    color: #A3A3A3;
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
-    margin-top: 0;
-    font-weight: 300;
-}
+    .stApp {
+        background-color: #080808;
+
+        background-image:
+            radial-gradient(
+                circle at 15% 50%,
+                rgba(220, 38, 38, 0.18) 0%,
+                transparent 28%
+            ),
+            radial-gradient(
+                circle at 85% 30%,
+                rgba(153, 27, 27, 0.18) 0%,
+                transparent 28%
+            ),
+            radial-gradient(
+                circle at 50% 80%,
+                rgba(239, 68, 68, 0.08) 0%,
+                transparent 30%
+            );
+
+        background-attachment: fixed;
+    }
 
 
-/* =========================
-   PROFILE PHOTO
-========================= */
+    html,
+    body,
+    [class*="css"] {
+        font-family: "Prompt", "Inter", sans-serif;
+        color: #f5f5f5;
+    }
 
-.profile-photo-wrap {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
 
-.profile-photo-wrap img {
-    width: 200px;
-    height: 200px;
+    /* =====================================================
+       REMOVE STREAMLIT DEFAULT UI
+    ===================================================== */
 
-    border-radius: 50%;
+    #MainMenu {
+        visibility: hidden;
+    }
 
-    border: 3px solid transparent;
+    footer {
+        visibility: hidden;
+    }
 
-    background:
-        linear-gradient(#181818, #181818) padding-box,
-        linear-gradient(
+
+    /* =====================================================
+       HERO
+    ===================================================== */
+
+    .hero {
+        text-align: center;
+        padding: 50px 20px 20px;
+    }
+
+    .hero h1 {
+        margin: 0 0 8px;
+
+        font-family: "Inter", "Prompt", sans-serif;
+
+        font-size: 3rem;
+        font-weight: 800;
+
+        background: linear-gradient(
             135deg,
-            #EF4444,
-            #DC2626,
-            #7F1D1D
-        ) border-box;
+            #ffffff 0%,
+            #ef4444 50%,
+            #991b1b 100%
+        );
 
-    box-shadow:
-        0 0 35px rgba(220, 38, 38, 0.35);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
 
-    object-fit: cover;
+        background-clip: text;
 
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-}
+        letter-spacing: -0.5px;
+    }
 
-.profile-photo-wrap img:hover {
-    transform: scale(1.04);
+    .hero p {
+        margin: 0;
 
-    box-shadow:
-        0 0 55px rgba(220, 38, 38, 0.55);
-}
+        color: #a3a3a3;
 
+        font-size: 1.1rem;
+        font-weight: 300;
 
-/* =========================
-   PROFILE CARD
-========================= */
+        letter-spacing: 0.5px;
+    }
 
-.profile-card {
-    max-width: 450px;
 
-    margin: 30px auto 0 auto;
+    /* =====================================================
+       PROFILE PHOTO
+    ===================================================== */
 
-    background: rgba(24, 24, 24, 0.78);
+    .profile-photo-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-    border: 1px solid rgba(239, 68, 68, 0.18);
+        margin-top: 20px;
+    }
 
-    border-radius: 20px;
+    .profile-photo {
+        width: 200px;
+        height: 200px;
 
-    padding: 32px 36px;
+        object-fit: cover;
 
-    text-align: center;
+        border-radius: 50%;
 
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+        border: 3px solid #dc2626;
 
-    box-shadow:
-        0 10px 30px -5px rgba(0, 0, 0, 0.45);
+        background: #181818;
 
-    transition: all 0.3s ease;
-}
+        box-shadow:
+            0 0 35px rgba(220, 38, 38, 0.35);
 
-.profile-card:hover {
-    border-color: rgba(239, 68, 68, 0.45);
+        transition:
+            transform 0.3s ease,
+            box-shadow 0.3s ease;
+    }
 
-    box-shadow:
-        0 15px 40px -5px rgba(220, 38, 38, 0.18);
-}
+    .profile-photo:hover {
+        transform: scale(1.04);
 
-.profile-card h2 {
-    color: #F5F5F5;
+        box-shadow:
+            0 0 55px rgba(220, 38, 38, 0.55);
+    }
 
-    font-family: 'Inter', 'Prompt', sans-serif;
 
-    font-size: 1.5rem;
+    /* =====================================================
+       PROFILE FALLBACK
+    ===================================================== */
 
-    font-weight: 700;
+    .profile-fallback {
+        width: 200px;
+        height: 200px;
 
-    margin: 0 0 20px 0;
-}
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
+        border-radius: 50%;
 
-/* =========================
-   INFORMATION ROW
-========================= */
+        background: #181818;
 
-.info-row {
-    display: flex;
+        border: 3px solid #dc2626;
 
-    justify-content: space-between;
+        font-size: 4rem;
 
-    align-items: center;
+        box-shadow:
+            0 0 35px rgba(220, 38, 38, 0.35);
+    }
 
-    padding: 14px 4px;
 
-    border-top: 1px solid rgba(239, 68, 68, 0.15);
+    /* =====================================================
+       PROFILE CARD
+    ===================================================== */
 
-    color: #E5E5E5;
+    .profile-card {
+        width: 100%;
+        max-width: 450px;
 
-    font-size: 1rem;
-}
+        margin: 30px auto 0;
 
-.info-row:first-of-type {
-    border-top: none;
-}
+        padding: 32px 36px;
 
-.info-row span.label {
-    color: #A3A3A3;
-    font-weight: 400;
-}
+        box-sizing: border-box;
 
-.info-row span.value {
-    font-weight: 600;
+        text-align: center;
 
-    color: #EF4444;
+        background: rgba(24, 24, 24, 0.78);
 
-    letter-spacing: 0.5px;
-}
+        border: 1px solid rgba(239, 68, 68, 0.18);
 
+        border-radius: 20px;
 
-/* =========================
-   SIDEBAR
-========================= */
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
 
-footer,
-#MainMenu {
-    visibility: hidden;
-}
+        box-shadow:
+            0 10px 30px -5px rgba(0, 0, 0, 0.45);
 
-[data-testid="stSidebar"],
-[data-testid="stSidebarCollapsedControl"] {
-    visibility: visible !important;
-}
+        transition:
+            border-color 0.3s ease,
+            box-shadow 0.3s ease;
+    }
 
-[data-testid="stSidebar"] {
-    background: #0D0D0D !important;
+    .profile-card:hover {
+        border-color: rgba(239, 68, 68, 0.45);
 
-    border-right:
-        1px solid rgba(239, 68, 68, 0.15) !important;
-}
+        box-shadow:
+            0 15px 40px -5px rgba(220, 38, 38, 0.18);
+    }
 
-[data-testid="stSidebarNav"] {
-    padding-top: 20px;
-}
+    .profile-card h2 {
+        margin: 0 0 20px;
 
-[data-testid="stSidebarNav"]::before {
-    content: "RECOMMEND_CAR";
+        color: #f5f5f5;
 
-    display: block;
+        font-family: "Prompt", sans-serif;
 
-    margin: 0 20px 20px 20px;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
 
-    padding-bottom: 16px;
 
-    border-bottom:
-        1px solid rgba(239, 68, 68, 0.15);
+    /* =====================================================
+       INFORMATION ROW
+    ===================================================== */
 
-    font-family: 'Inter', sans-serif;
+    .info-row {
+        display: flex;
 
-    font-size: 0.75rem;
+        justify-content: space-between;
+        align-items: center;
 
-    font-weight: 700;
+        padding: 14px 4px;
 
-    letter-spacing: 2px;
+        border-top: 1px solid rgba(239, 68, 68, 0.15);
 
-    color: #737373;
-}
+        font-size: 1rem;
+    }
 
-[data-testid="stSidebarNav"] a {
-    margin: 4px 12px !important;
+    .info-row:first-of-type {
+        border-top: none;
+    }
 
-    padding: 12px 16px !important;
+    .info-row .label {
+        color: #a3a3a3;
 
-    border-radius: 10px;
+        font-weight: 400;
+    }
 
-    color: #A3A3A3 !important;
+    .info-row .value {
+        color: #ef4444;
 
-    font-family: 'Prompt', sans-serif;
+        font-weight: 600;
 
-    font-weight: 500;
+        letter-spacing: 0.5px;
+    }
 
-    font-size: 0.95rem;
 
-    transition: all 0.2s ease;
+    /* =====================================================
+       SIDEBAR
+    ===================================================== */
 
-    background: transparent !important;
-}
+    [data-testid="stSidebar"] {
+        background: #0d0d0d !important;
 
-[data-testid="stSidebarNav"] a:hover {
-    background:
-        rgba(220, 38, 38, 0.12) !important;
+        border-right:
+            1px solid rgba(239, 68, 68, 0.15) !important;
+    }
 
-    color: #FCA5A5 !important;
-}
+    [data-testid="stSidebarNav"] {
+        padding-top: 20px;
+    }
 
-[data-testid="stSidebarNav"] a[aria-current="page"] {
-    background:
-        linear-gradient(
-            90deg,
-            rgba(220, 38, 38, 0.20) 0%,
-            transparent 100%
-        ) !important;
+    [data-testid="stSidebarNav"]::before {
+        content: "RECOMMEND_CAR";
 
-    color: #EF4444 !important;
+        display: block;
 
-    border-left:
-        3px solid #DC2626;
+        margin: 0 20px 20px;
+        padding-bottom: 16px;
 
-    font-weight: 600;
-}
+        border-bottom:
+            1px solid rgba(239, 68, 68, 0.15);
 
+        color: #737373;
 
-/* =========================
-   SIDEBAR MENU TEXT
-========================= */
+        font-family: "Inter", sans-serif;
 
-[data-testid="stSidebarNav"] li:nth-child(1) a * {
-    font-size: 0 !important;
-}
+        font-size: 0.75rem;
+        font-weight: 700;
 
-[data-testid="stSidebarNav"] li:nth-child(1) a::after {
-    content: "🏠 หน้าหลัก";
-    font-size: 0.95rem !important;
-}
+        letter-spacing: 2px;
+    }
 
-[data-testid="stSidebarNav"] li:nth-child(2) a * {
-    font-size: 0 !important;
-}
+    [data-testid="stSidebarNav"] a {
+        margin: 4px 12px !important;
 
-[data-testid="stSidebarNav"] li:nth-child(2) a::after {
-    content: "🧑‍💻 ผู้พัฒนา";
-    font-size: 0.95rem !important;
-}
+        padding: 12px 16px !important;
 
+        border-radius: 10px;
 
-/* =========================
-   FOOTER
-========================= */
+        color: #a3a3a3 !important;
 
-.custom-footer {
-    text-align: center;
+        font-family: "Prompt", sans-serif;
 
-    color: #666666;
+        font-size: 0.95rem;
+        font-weight: 500;
 
-    margin-top: 50px;
+        background: transparent !important;
 
-    padding: 30px 20px;
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
+    }
 
-    font-size: 0.85rem;
+    [data-testid="stSidebarNav"] a:hover {
+        background:
+            rgba(220, 38, 38, 0.12) !important;
 
-    border-top:
-        1px solid rgba(239, 68, 68, 0.12);
-}
+        color: #fca5a5 !important;
+    }
 
-</style>
-""", unsafe_allow_html=True)
+    [data-testid="stSidebarNav"] a[aria-current="page"] {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(220, 38, 38, 0.20),
+                transparent
+            ) !important;
 
+        color: #ef4444 !important;
 
-# =========================
+        border-left:
+            3px solid #dc2626;
+
+        font-weight: 600;
+    }
+
+
+    /* =====================================================
+       SIDEBAR MENU TEXT
+    ===================================================== */
+
+    [data-testid="stSidebarNav"] li:nth-child(1) a * {
+        font-size: 0 !important;
+    }
+
+    [data-testid="stSidebarNav"] li:nth-child(1) a::after {
+        content: "🏠 หน้าหลัก";
+
+        font-size: 0.95rem !important;
+    }
+
+
+    [data-testid="stSidebarNav"] li:nth-child(2) a * {
+        font-size: 0 !important;
+    }
+
+    [data-testid="stSidebarNav"] li:nth-child(2) a::after {
+        content: "🧑‍💻 ผู้พัฒนา";
+
+        font-size: 0.95rem !important;
+    }
+
+
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+
+    .custom-footer {
+        margin-top: 50px;
+        padding: 30px 20px;
+
+        text-align: center;
+
+        color: #666666;
+
+        font-size: 0.85rem;
+
+        border-top:
+            1px solid rgba(239, 68, 68, 0.12);
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 600px) {
+
+        .hero {
+            padding-top: 30px;
+        }
+
+        .hero h1 {
+            font-size: 2.3rem;
+        }
+
+        .hero p {
+            font-size: 0.95rem;
+        }
+
+        .profile-photo,
+        .profile-fallback {
+            width: 160px;
+            height: 160px;
+        }
+
+        .profile-card {
+            padding: 25px 22px;
+        }
+
+        .profile-card h2 {
+            font-size: 1.25rem;
+        }
+
+        .info-row {
+            font-size: 0.9rem;
+        }
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+
+# =========================================================
 # HERO
-# =========================
+# =========================================================
 
-st.markdown("""
-<div class="hero">
-    <h1>ผู้พัฒนา</h1>
-    <p>ข้อมูลผู้จัดทำโปรเจค Recommend_car</p>
-</div>
-""", unsafe_allow_html=True)
+st.markdown(
+    """
+    <div class="hero">
+        <h1>ผู้พัฒนา</h1>
+        <p>ข้อมูลผู้จัดทำโปรเจค Recommend_car</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 
-# =========================
+# =========================================================
 # PROFILE IMAGE
-# =========================
+# =========================================================
 
 photo_path = (
     Path(__file__).resolve().parent.parent
@@ -362,89 +473,85 @@ photo_path = (
     / "024.jpg"
 )
 
-try:
+
+if photo_path.exists():
+
     photo_b64 = base64.b64encode(
         photo_path.read_bytes()
-    ).decode()
+    ).decode("utf-8")
 
     st.markdown(
-        f'''
+        f"""
         <div class="profile-photo-wrap">
             <img
+                class="profile-photo"
                 src="data:image/jpeg;base64,{photo_b64}"
-                alt="Profile Photo"
+                alt="รูปผู้พัฒนา"
             >
         </div>
-        ''',
+        """,
         unsafe_allow_html=True,
     )
 
-except FileNotFoundError:
+else:
 
     st.markdown(
-        '''
+        """
         <div class="profile-photo-wrap">
-
-            <div style="
-                width:200px;
-                height:200px;
-                border-radius:50%;
-                background:#181818;
-                border:3px solid #DC2626;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                font-size:4rem;
-                box-shadow:0 0 35px rgba(220,38,38,0.35);
-            ">
+            <div class="profile-fallback">
                 🧑‍💻
             </div>
-
         </div>
-        ''',
+        """,
         unsafe_allow_html=True,
     )
 
 
-# =========================
+# =========================================================
 # PROFILE INFORMATION
-# =========================
+# =========================================================
 
-st.markdown("""
-<div class="profile-card">
+st.markdown(
+    """
+    <div class="profile-card">
 
-    <h2>จตุรภัทร สถาปิตานนท์</h2>
+        <h2>จตุรภัทร สถาปิตานนท์</h2>
 
-    <div class="info-row">
-        <span class="label">
-            รหัสนักศึกษา
-        </span>
+        <div class="info-row">
+            <span class="label">
+                รหัสนักศึกษา
+            </span>
 
-        <span class="value">
-            664245024
-        </span>
+            <span class="value">
+                664245024
+            </span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">
+                หมู่เรียน
+            </span>
+
+            <span class="value">
+                Sec. 66/43
+            </span>
+        </div>
+
     </div>
-
-    <div class="info-row">
-        <span class="label">
-            หมู่เรียน
-        </span>
-
-        <span class="value">
-            Sec. 66/43
-        </span>
-    </div>
-
-</div>
-""", unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True,
+)
 
 
-# =========================
+# =========================================================
 # FOOTER
-# =========================
+# =========================================================
 
-st.markdown("""
-<div class="custom-footer">
-    Made with ❤️ using Streamlit · Recommend_car Projects 2026
-</div>
-""", unsafe_allow_html=True)
+st.markdown(
+    """
+    <div class="custom-footer">
+        Made with ❤️ using Streamlit · Recommend_car Project 2026
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
