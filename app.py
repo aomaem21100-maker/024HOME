@@ -1,4 +1,4 @@
-```python
+python
 import streamlit as st
 
 st.set_page_config(
@@ -235,4 +235,3 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-```
