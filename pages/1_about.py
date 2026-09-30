@@ -1,3 +1,4 @@
+
 import base64
 from pathlib import Path
 
@@ -5,7 +6,7 @@ import streamlit as st
 
 
 # =========================================================
-# PAGE CONFIG
+# ตั้งค่าหน้าเว็บ
 # =========================================================
 
 st.set_page_config(
@@ -17,25 +18,25 @@ st.set_page_config(
 
 
 # =========================================================
-# CUSTOM CSS
+# CSS
 # =========================================================
 
 st.markdown(
     """
     <style>
 
-    /* =====================================================
-       GOOGLE FONTS
-    ===================================================== */
+    /* =========================
+       FONT
+    ========================= */
 
     @import url(
         'https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Inter:wght@400;600;700;800&display=swap'
     );
 
 
-    /* =====================================================
-       GLOBAL
-    ===================================================== */
+    /* =========================
+       MAIN
+    ========================= */
 
     .stApp {
         background-color: #080808;
@@ -65,13 +66,13 @@ st.markdown(
     body,
     [class*="css"] {
         font-family: "Prompt", "Inter", sans-serif;
-        color: #f5f5f5;
+        color: #F5F5F5;
     }
 
 
-    /* =====================================================
-       REMOVE STREAMLIT DEFAULT UI
-    ===================================================== */
+    /* =========================
+       ซ่อนเมนู Streamlit
+    ========================= */
 
     #MainMenu {
         visibility: hidden;
@@ -82,9 +83,9 @@ st.markdown(
     }
 
 
-    /* =====================================================
+    /* =========================
        HERO
-    ===================================================== */
+    ========================= */
 
     .hero {
         text-align: center;
@@ -101,9 +102,9 @@ st.markdown(
 
         background: linear-gradient(
             135deg,
-            #ffffff 0%,
-            #ef4444 50%,
-            #991b1b 100%
+            #FFFFFF 0%,
+            #EF4444 50%,
+            #991B1B 100%
         );
 
         -webkit-background-clip: text;
@@ -117,7 +118,7 @@ st.markdown(
     .hero p {
         margin: 0;
 
-        color: #a3a3a3;
+        color: #A3A3A3;
 
         font-size: 1.1rem;
         font-weight: 300;
@@ -126,9 +127,9 @@ st.markdown(
     }
 
 
-    /* =====================================================
-       PROFILE PHOTO
-    ===================================================== */
+    /* =========================
+       รูปโปรไฟล์
+    ========================= */
 
     .profile-photo-wrap {
         display: flex;
@@ -146,7 +147,7 @@ st.markdown(
 
         border-radius: 50%;
 
-        border: 3px solid #dc2626;
+        border: 3px solid #DC2626;
 
         background: #181818;
 
@@ -166,9 +167,9 @@ st.markdown(
     }
 
 
-    /* =====================================================
-       PROFILE FALLBACK
-    ===================================================== */
+    /* =========================
+       กรณีไม่มีรูป
+    ========================= */
 
     .profile-fallback {
         width: 200px;
@@ -182,7 +183,7 @@ st.markdown(
 
         background: #181818;
 
-        border: 3px solid #dc2626;
+        border: 3px solid #DC2626;
 
         font-size: 4rem;
 
@@ -191,9 +192,9 @@ st.markdown(
     }
 
 
-    /* =====================================================
+    /* =========================
        PROFILE CARD
-    ===================================================== */
+    ========================= */
 
     .profile-card {
         width: 100%;
@@ -234,7 +235,7 @@ st.markdown(
     .profile-card h2 {
         margin: 0 0 20px;
 
-        color: #f5f5f5;
+        color: #F5F5F5;
 
         font-family: "Prompt", sans-serif;
 
@@ -243,9 +244,9 @@ st.markdown(
     }
 
 
-    /* =====================================================
+    /* =========================
        INFORMATION ROW
-    ===================================================== */
+    ========================= */
 
     .info-row {
         display: flex;
@@ -255,7 +256,8 @@ st.markdown(
 
         padding: 14px 4px;
 
-        border-top: 1px solid rgba(239, 68, 68, 0.15);
+        border-top:
+            1px solid rgba(239, 68, 68, 0.15);
 
         font-size: 1rem;
     }
@@ -265,13 +267,13 @@ st.markdown(
     }
 
     .info-row .label {
-        color: #a3a3a3;
+        color: #A3A3A3;
 
         font-weight: 400;
     }
 
     .info-row .value {
-        color: #ef4444;
+        color: #EF4444;
 
         font-weight: 600;
 
@@ -279,12 +281,12 @@ st.markdown(
     }
 
 
-    /* =====================================================
+    /* =========================
        SIDEBAR
-    ===================================================== */
+    ========================= */
 
     [data-testid="stSidebar"] {
-        background: #0d0d0d !important;
+        background: #0D0D0D !important;
 
         border-right:
             1px solid rgba(239, 68, 68, 0.15) !important;
@@ -293,6 +295,9 @@ st.markdown(
     [data-testid="stSidebarNav"] {
         padding-top: 20px;
     }
+
+
+    /* ชื่อระบบด้านบน Sidebar */
 
     [data-testid="stSidebarNav"]::before {
         content: "RECOMMEND_CAR";
@@ -315,6 +320,9 @@ st.markdown(
         letter-spacing: 2px;
     }
 
+
+    /* เมนู Sidebar */
+
     [data-testid="stSidebarNav"] a {
         margin: 4px 12px !important;
 
@@ -322,7 +330,7 @@ st.markdown(
 
         border-radius: 10px;
 
-        color: #a3a3a3 !important;
+        color: #A3A3A3 !important;
 
         font-family: "Prompt", sans-serif;
 
@@ -336,12 +344,18 @@ st.markdown(
             color 0.2s ease;
     }
 
+
+    /* Hover */
+
     [data-testid="stSidebarNav"] a:hover {
         background:
             rgba(220, 38, 38, 0.12) !important;
 
-        color: #fca5a5 !important;
+        color: #FCA5A5 !important;
     }
+
+
+    /* หน้าที่กำลังเปิด */
 
     [data-testid="stSidebarNav"] a[aria-current="page"] {
         background:
@@ -351,18 +365,18 @@ st.markdown(
                 transparent
             ) !important;
 
-        color: #ef4444 !important;
+        color: #EF4444 !important;
 
         border-left:
-            3px solid #dc2626;
+            3px solid #DC2626;
 
         font-weight: 600;
     }
 
 
-    /* =====================================================
-       SIDEBAR MENU TEXT
-    ===================================================== */
+    /* =========================
+       เปลี่ยนชื่อเมนู Sidebar
+    ========================= */
 
     [data-testid="stSidebarNav"] li:nth-child(1) a * {
         font-size: 0 !important;
@@ -386,12 +400,13 @@ st.markdown(
     }
 
 
-    /* =====================================================
+    /* =========================
        FOOTER
-    ===================================================== */
+    ========================= */
 
     .custom-footer {
         margin-top: 50px;
+
         padding: 30px 20px;
 
         text-align: center;
@@ -405,9 +420,9 @@ st.markdown(
     }
 
 
-    /* =====================================================
+    /* =========================
        MOBILE
-    ===================================================== */
+    ========================= */
 
     @media (max-width: 600px) {
 
@@ -456,7 +471,10 @@ st.markdown(
     """
     <div class="hero">
         <h1>ผู้พัฒนา</h1>
-        <p>ข้อมูลผู้จัดทำโปรเจค Recommend_car</p>
+
+        <p>
+            ข้อมูลผู้จัดทำโปรเจค Recommend_car
+        </p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -476,31 +494,52 @@ photo_path = (
 
 if photo_path.exists():
 
-    photo_b64 = base64.b64encode(
-        photo_path.read_bytes()
-    ).decode("utf-8")
+    try:
 
-    st.markdown(
-        f"""
-        <div class="profile-photo-wrap">
-            <img
-                class="profile-photo"
-                src="data:image/jpeg;base64,{photo_b64}"
-                alt="รูปผู้พัฒนา"
-            >
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+        photo_b64 = base64.b64encode(
+            photo_path.read_bytes()
+        ).decode("utf-8")
+
+        st.markdown(
+            f"""
+            <div class="profile-photo-wrap">
+
+                <img
+                    class="profile-photo"
+                    src="data:image/jpeg;base64,{photo_b64}"
+                    alt="รูปผู้พัฒนา"
+                >
+
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    except Exception:
+
+        st.markdown(
+            """
+            <div class="profile-photo-wrap">
+
+                <div class="profile-fallback">
+                    🧑‍💻
+                </div>
+
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
 else:
 
     st.markdown(
         """
         <div class="profile-photo-wrap">
+
             <div class="profile-fallback">
                 🧑‍💻
             </div>
+
         </div>
         """,
         unsafe_allow_html=True,
@@ -515,9 +554,12 @@ st.markdown(
     """
     <div class="profile-card">
 
-        <h2>จตุรภัทร สถาปิตานนท์</h2>
+        <h2>
+            จตุรภัทร สถาปิตานนท์
+        </h2>
 
         <div class="info-row">
+
             <span class="label">
                 รหัสนักศึกษา
             </span>
@@ -525,9 +567,12 @@ st.markdown(
             <span class="value">
                 664245024
             </span>
+
         </div>
 
+
         <div class="info-row">
+
             <span class="label">
                 หมู่เรียน
             </span>
@@ -535,6 +580,7 @@ st.markdown(
             <span class="value">
                 Sec. 66/43
             </span>
+
         </div>
 
     </div>
@@ -555,3 +601,4 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
