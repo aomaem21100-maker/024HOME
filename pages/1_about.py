@@ -175,7 +175,7 @@ footer, #MainMenu { visibility: hidden; }
 st.markdown("""
 <div class="hero">
     <h1>ผู้พัฒนา</h1>
-    <p>ข้อมูลผู้จัดทำโปรเจค Machine Learning Hub</p>
+    <p>ข้อมูลผู้จัดทำโปรเจค Recommend_car</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -195,10 +195,10 @@ except FileNotFoundError:
 
 st.markdown("""
 <div class="profile-card">
-    <h2>ทินภัทร ช้อยสามนาค</h2>
+    <h2>จตุรภัทร สถาปิตานนท์</h2>
     <div class="info-row">
         <span class="label">รหัสนักศึกษา</span>
-        <span class="value">664245011</span>
+        <span class="value">664245024</span>
     </div>
     <div class="info-row">
         <span class="label">หมู่เรียน</span>
@@ -209,6 +209,6 @@ st.markdown("""
 
 st.markdown("""
 <div class="custom-footer">
-    Made with ❤️ using Streamlit · Machine Learning Projects 2026
+    Made with ❤️ using Streamlit · Recommend_car Projects 2026
 </div>
 """, unsafe_allow_html=True)
