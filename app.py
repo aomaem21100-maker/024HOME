@@ -26,7 +26,6 @@ html, body, [class*="css"] {
     color: #F5F5F5;
 }
 
-/* HERO */
 .hero {
     text-align: center;
     padding: 50px 20px 30px 20px;
@@ -36,12 +35,7 @@ html, body, [class*="css"] {
     font-family: 'Inter', 'Prompt', sans-serif;
     font-size: 3.3rem;
     font-weight: 800;
-    background: linear-gradient(
-        135deg,
-        #FFFFFF 0%,
-        #EF4444 50%,
-        #991B1B 100%
-    );
+    background: linear-gradient(135deg, #FFFFFF 0%, #EF4444 50%, #991B1B 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 12px;
@@ -57,7 +51,6 @@ html, body, [class*="css"] {
     font-weight: 300;
 }
 
-/* CARD */
 .card {
     background: rgba(24, 24, 24, 0.75);
     border: 1px solid rgba(239, 68, 68, 0.15);
@@ -108,7 +101,6 @@ html, body, [class*="css"] {
     margin: 0;
 }
 
-/* BUTTON */
 .btn {
     display: block;
     text-align: center;
@@ -118,35 +110,18 @@ html, body, [class*="css"] {
     font-weight: 600;
     font-size: 0.95rem;
     color: #FFFFFF !important;
-
-    background: linear-gradient(
-        135deg,
-        #DC2626 0%,
-        #991B1B 100%
-    );
-
+    background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
     transition: all 0.3s ease;
-
-    box-shadow:
-        0 4px 15px rgba(220, 38, 38, 0.30);
-
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.30);
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .btn:hover {
-    background: linear-gradient(
-        135deg,
-        #EF4444 0%,
-        #B91C1C 100%
-    );
-
-    box-shadow:
-        0 8px 25px rgba(220, 38, 38, 0.45);
-
+    background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
+    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.45);
     transform: translateY(-2px);
 }
 
-/* SECTION TITLE */
 .section-title {
     text-align: center;
     color: #D4D4D4;
@@ -155,7 +130,6 @@ html, body, [class*="css"] {
     font-weight: 400;
 }
 
-/* FOOTER */
 .custom-footer {
     text-align: center;
     color: #666666;
@@ -169,10 +143,26 @@ footer, #MainMenu {
     visibility: hidden;
 }
 
-/* SIDEBAR */
 [data-testid="stSidebar"] {
     background: #0D0D0D !important;
     border-right: 1px solid rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Streamlit button */
+div.stButton > button {
+    width: 100%;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #DC2626, #991B1B);
+    color: white;
+    border: none;
+    padding: 12px;
+    font-weight: 600;
+}
+
+div.stButton > button:hover {
+    background: linear-gradient(135deg, #EF4444, #B91C1C);
+    color: white;
+    border: none;
 }
 </style>
 
@@ -194,13 +184,13 @@ APPS = [
         "🚗",
         "โครงสร้างข้อมูลรถยนต์",
         "จัดการและวิเคราะห์ข้อมูลรถยนต์สำหรับระบบแนะนำ",
-        "https://colab.research.google.com/",
+        "https://colab.research.google.com/drive/1TSqD6dk7fj__txvG_xBwG3HH9vDFcz5K?usp=sharing",
     ),
     (
         "📊",
         "วิเคราะห์ข้อมูลรถยนต์",
-        "วิเคราะห์คุณสมบัติและความสัมพันธ์ของรถยนต์จากข้อมูล",
-        "https://colab.research.google.com/",
+        "วิเคราะห์คุณสมบัติและความสัมพันธ์ของข้อมูลรถยนต์",
+        "https://colab.research.google.com/drive/1tbFJ48SuP3vwyOX_ZFAfnXY3_4s_7JHW?usp=drive_link",
     ),
     (
         "🎯",
@@ -211,7 +201,6 @@ APPS = [
 ]
 
 
-# 3 cards on the first row
 cols = st.columns(3)
 
 for i, (icon, title, desc, url) in enumerate(APPS):
@@ -226,15 +215,15 @@ for i, (icon, title, desc, url) in enumerate(APPS):
                     <h3>{title}</h3>
                     <p>{desc}</p>
                 </div>
-
-                <a class="btn"
-                   href="{url}"
-                   target="_blank">
-                    เปิดระบบ →
-                </a>
             </div>
             """,
             unsafe_allow_html=True,
+        )
+
+        st.link_button(
+            "เปิดระบบ →",
+            url,
+            use_container_width=True,
         )
 
 
