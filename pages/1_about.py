@@ -4,195 +4,207 @@ from pathlib import Path
 import streamlit as st
  
 st.set_page_config(
-    page_title="ผู้พัฒนา | ML Hub",
+    page_title="ผู้พัฒนา | Recommend_car",
     page_icon="🧑‍💻",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
  
-st.markdown("""
+CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Inter:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Prompt:wght@300;400;500;600;700&display=swap');
  
-/* Main App Layout - Modern Dark Red Theme */
-.stApp {
-    background-color: #0A0505;
-    background-image: 
-        radial-gradient(circle at 15% 50%, rgba(225, 29, 72, 0.15) 0%, transparent 30%),
-        radial-gradient(circle at 85% 30%, rgba(153, 27, 27, 0.2) 0%, transparent 30%),
-        radial-gradient(circle at 50% 80%, rgba(239, 68, 68, 0.1) 0%, transparent 35%);
-    background-attachment: fixed;
+:root {
+    --nf-red: #E50914;
+    --nf-red-dark: #B20710;
+    --nf-bg: #141414;
+    --nf-text: #FFFFFF;
+    --nf-muted: #B3B3B3;
 }
  
-html, body, [class*="css"] { 
-    font-family: 'Prompt', 'Inter', sans-serif; 
-    color: #F3F4F6;
+.stApp { background: var(--nf-bg); }
+ 
+html, body, [class*="css"] {
+    font-family: 'Prompt', sans-serif;
+    color: var(--nf-text);
 }
  
-/* Back link */
-.back-link {
-    display: inline-block;
-    margin: 20px 0 0 4%;
-    color: #F87171 !important;
+header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
+[data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"] { display: none !important; }
+ 
+.block-container {
+    padding: 0 0 40px 0 !important;
+    max-width: 100% !important;
+}
+ 
+/* ---------- Navbar ---------- */
+.nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 16px 4%;
+    background: linear-gradient(180deg, rgba(0,0,0,.85) 0%, rgba(20,20,20,0) 100%);
+}
+.logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.1rem;
+    letter-spacing: 2px;
+    color: var(--nf-red);
+    line-height: 1;
+}
+.nav a {
+    color: #E5E5E5;
     text-decoration: none !important;
-    font-weight: 500;
+    font-size: .9rem;
 }
-.back-link:hover { color: #FECDD3 !important; }
+.nav a:hover { color: var(--nf-muted); }
+.nav a.active { color: #FFFFFF; font-weight: 600; }
  
-/* Hero Section */
-.hero { 
-    text-align: center; 
-    padding: 30px 20px 20px 20px; 
+/* ---------- Hero ---------- */
+.hero {
+    position: relative;
+    padding: 70px 4% 50px 4%;
+    text-align: center;
+    background:
+        linear-gradient(0deg, var(--nf-bg) 0%, rgba(20,20,20,0) 35%),
+        radial-gradient(circle at 50% 30%, rgba(229,9,20,.45) 0%, rgba(229,9,20,0) 55%),
+        linear-gradient(135deg, #2a0306 0%, #0b0b0b 70%);
+    overflow: hidden;
+}
+.hero .tag {
+    color: var(--nf-red);
+    font-weight: 700;
+    letter-spacing: 3px;
+    font-size: .85rem;
+    margin-bottom: 10px;
 }
 .hero h1 {
-    font-family: 'Inter', 'Prompt', sans-serif;
-    font-size: 3rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #F87171 0%, #EF4444 50%, #DC2626 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 8px;
-    letter-spacing: -0.5px;
+    font-family: 'Bebas Neue', 'Prompt', sans-serif;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 400;
+    line-height: 1;
+    margin: 0 0 12px 0;
+    letter-spacing: 2px;
+    text-shadow: 2px 4px 12px rgba(0,0,0,.6);
 }
-.hero p { 
-    color: #9CA3AF; 
-    font-size: 1.1rem; 
-    letter-spacing: 0.5px; 
-    margin-top: 0; 
-    font-weight: 300;
+.hero p {
+    font-size: 1.05rem;
+    color: #E5E5E5;
+    margin: 0;
+    text-shadow: 1px 2px 6px rgba(0,0,0,.7);
 }
  
-/* Profile Photo Wrapper */
+/* ---------- Profile (สไตล์ Who's watching) ---------- */
 .profile-photo-wrap {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: -10px;
 }
-.profile-photo-wrap img {
+.profile-photo-wrap img,
+.profile-photo-wrap .ph {
     width: 200px;
     height: 200px;
-    border-radius: 50%;
+    border-radius: 8px;
     border: 3px solid transparent;
-    background:
-        linear-gradient(#180C0C, #180C0C) padding-box,
-        linear-gradient(135deg, #F87171, #EF4444, #991B1B) border-box;
-    box-shadow: 0 0 40px rgba(225, 29, 72, 0.35);
     object-fit: cover;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,.7);
+    transition: border-color .2s ease, transform .3s ease;
 }
 .profile-photo-wrap img:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 50px rgba(225, 29, 72, 0.6);
+    border-color: #FFFFFF;
+    transform: scale(1.05);
+}
+.profile-photo-wrap .ph {
+    background: #333333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.5rem;
 }
  
-/* Profile Card */
+/* ---------- Profile Card ---------- */
 .profile-card {
-    max-width: 450px;
-    margin: 30px auto 0 auto;
-    background: rgba(24, 12, 12, 0.7);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    border-radius: 20px;
-    padding: 32px 36px;
-    text-align: center;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6);
+    max-width: 460px;
+    margin: 28px auto 0 auto;
+    background: #181818;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,.6);
+    border-top: 3px solid var(--nf-red);
 }
 .profile-card h2 {
-    color: #FFFFFF;
-    font-family: 'Inter', 'Prompt', sans-serif;
+    margin: 0;
+    padding: 24px 28px 8px 28px;
     font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0 0 20px 0;
+    font-weight: 600;
+    text-align: center;
+    color: #FFFFFF;
+}
+.profile-card .role {
+    text-align: center;
+    color: var(--nf-muted);
+    font-size: .85rem;
+    padding-bottom: 14px;
 }
 .info-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 4px;
-    border-top: 1px solid rgba(239, 68, 68, 0.15);
-    color: #F3F4F6;
+    padding: 16px 28px;
+    border-top: 1px solid #2a2a2a;
     font-size: 1rem;
 }
-.info-row:first-of-type { border-top: none; }
-.info-row span.label { color: #9CA3AF; font-weight: 400; }
-.info-row span.value { font-weight: 600; color: #F87171; letter-spacing: 0.5px; }
+.info-row .label { color: var(--nf-muted); }
+.info-row .value { font-weight: 600; color: #FFFFFF; letter-spacing: .5px; }
+.info-row .value.red { color: var(--nf-red); }
  
-/* Hide default Streamlit elements */
-footer, #MainMenu { visibility: hidden; }
-[data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"] { visibility: visible !important; }
- 
-/* Sidebar Styling */
-[data-testid="stSidebar"] {
-    background: #0F0707 !important;
-    border-right: 1px solid rgba(239, 68, 68, 0.15) !important;
-}
-[data-testid="stSidebarNav"] {
-    padding-top: 20px;
-}
-[data-testid="stSidebarNav"]::before {
-    content: "ML HUB NAVIGATION";
-    display: block;
-    margin: 0 20px 20px 20px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid rgba(239, 68, 68, 0.15);
-    font-family: 'Inter', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: #78716C;
-}
-[data-testid="stSidebarNav"] a {
-    margin: 4px 12px !important;
-    padding: 12px 16px !important;
-    border-radius: 10px;
-    color: #9CA3AF !important;
-    font-family: 'Prompt', sans-serif;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
-    background: transparent !important;
-}
-[data-testid="stSidebarNav"] a:hover {
-    background: rgba(225, 29, 72, 0.15) !important;
-    color: #FECDD3 !important;
-}
-[data-testid="stSidebarNav"] a[aria-current="page"] {
-    background: linear-gradient(90deg, rgba(225, 29, 72, 0.25) 0%, transparent 100%) !important;
-    color: #F87171 !important;
-    border-left: 3px solid #EF4444;
+/* ---------- Button ---------- */
+.btn-wrap { text-align: center; margin-top: 28px; }
+.nbtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 28px;
+    border-radius: 4px;
+    font-size: 1.05rem;
     font-weight: 600;
+    text-decoration: none !important;
+    background: #FFFFFF;
+    color: #000000 !important;
+    transition: all .2s ease;
 }
+.nbtn:hover { background: rgba(255,255,255,.75); }
  
-/* เปลี่ยนข้อความเมนู: app -> หน้าหลัก, about -> ผู้พัฒนา */
-[data-testid="stSidebarNav"] li:nth-child(1) a * { font-size: 0 !important; }
-[data-testid="stSidebarNav"] li:nth-child(1) a::after { content: "🏠 หน้าหลัก"; font-size: 0.95rem !important; }
-[data-testid="stSidebarNav"] li:nth-child(2) a * { font-size: 0 !important; }
-[data-testid="stSidebarNav"] li:nth-child(2) a::after { content: "🧑‍💻 ผู้พัฒนา"; font-size: 0.95rem !important; }
- 
-/* Footer */
-.custom-footer {
+.nf-footer {
+    margin: 60px 4% 0 4%;
+    padding-top: 24px;
+    border-top: 1px solid #333333;
+    color: #757575;
+    font-size: .85rem;
     text-align: center;
-    color: #78716C;
-    margin-top: 50px;
-    padding: 30px 20px;
-    font-size: 0.85rem;
-    border-top: 1px solid rgba(239, 68, 68, 0.15);
 }
 </style>
-""", unsafe_allow_html=True)
+"""
  
-st.markdown(
-    '<a class="back-link" href="/" target="_self">← กลับหน้าหลัก</a>',
-    unsafe_allow_html=True,
-)
- 
-st.markdown("""
-<div class="hero">
-    <h1>ผู้พัฒนา</h1>
-    <p>ข้อมูลผู้จัดทำโปรเจค Recommend_car</p>
+nav = """
+<div class="nav">
+<div class="logo">RECOMMEND_CAR</div>
+<a href="/" target="_self">หน้าแรก</a>
+<a href="/#systems" target="_self">ระบบทั้งหมด</a>
+<a href="/about" target="_self" class="active">ผู้พัฒนา</a>
 </div>
-""", unsafe_allow_html=True)
+<div class="hero">
+<div class="tag">DEVELOPER</div>
+<h1>ผู้พัฒนา</h1>
+<p>ข้อมูลผู้จัดทำโปรเจค Recommend_car</p>
+</div>
+"""
+ 
+st.markdown(CSS, unsafe_allow_html=True)
+st.markdown(nav, unsafe_allow_html=True)
  
 # โหลดรูปภาพ
 photo_path = Path(__file__).resolve().parent.parent / "assets" / "024.jpg"
@@ -204,26 +216,22 @@ try:
     )
 except FileNotFoundError:
     st.markdown(
-        '<div class="profile-photo-wrap"><div style="width:200px;height:200px;border-radius:50%;background:#180C0C;border:3px solid #EF4444;display:flex;align-items:center;justify-content:center;font-size:4rem;">🧑‍💻</div></div>',
+        '<div class="profile-photo-wrap"><div class="ph">🧑‍💻</div></div>',
         unsafe_allow_html=True,
     )
  
-st.markdown("""
+card = """
 <div class="profile-card">
-    <h2>จตุรภัทร สถาปิตานนท์</h2>
-    <div class="info-row">
-        <span class="label">รหัสนักศึกษา</span>
-        <span class="value">664245024</span>
-    </div>
-    <div class="info-row">
-        <span class="label">หมู่เรียน</span>
-        <span class="value">Sec. 66/43</span>
-    </div>
+<h2>จตุรภัทร สถาปิตานนท์</h2>
+<div class="role">นักพัฒนาโปรเจค Recommend_car</div>
+<div class="info-row"><span class="label">รหัสนักศึกษา</span><span class="value red">664245024</span></div>
+<div class="info-row"><span class="label">หมู่เรียน</span><span class="value">Sec. 66/43</span></div>
 </div>
-""", unsafe_allow_html=True)
+<div class="btn-wrap"><a class="nbtn" href="/" target="_self">← กลับหน้าหลัก</a></div>
+"""
+st.markdown(card, unsafe_allow_html=True)
  
-st.markdown("""
-<div class="custom-footer">
-    Made with ❤️️ using Streamlit · Recommend_car Projects 2026
-</div>
-""", unsafe_allow_html=True)
+st.markdown(
+    '<div class="nf-footer">Made with ❤️ using Streamlit · Recommend_car 2026</div>',
+    unsafe_allow_html=True,
+)
