@@ -28,6 +28,9 @@ html, body, [class*="css"] {
  
 header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
  
+/* ซ่อน sidebar ทั้งหมด เพราะใช้ navbar เองแทน */
+[data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"] { display: none !important; }
+ 
 .block-container {
     padding: 0 0 40px 0 !important;
     max-width: 100% !important;
@@ -267,8 +270,9 @@ FIRST_URL = APPS[0]["url"]
 hero = f"""
 <div class="nav">
 <div class="logo">RECOMMEND_CAR</div>
-<a href="#">หน้าแรก</a>
+<a href="/" target="_self">หน้าแรก</a>
 <a href="#systems">ระบบทั้งหมด</a>
+<a href="/about" target="_self">ผู้พัฒนา</a>
 </div>
 <div class="hero">
 <div class="bg-car">🚗</div>
