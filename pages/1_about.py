@@ -1,19 +1,19 @@
 import base64
 from pathlib import Path
-
+ 
 import streamlit as st
-
+ 
 st.set_page_config(
     page_title="ผู้พัฒนา | ML Hub",
     page_icon="🧑‍💻",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
-
+ 
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Inter:wght@400;600;800&display=swap');
-
+ 
 /* Main App Layout - Modern Dark Red Theme */
 .stApp {
     background-color: #0A0505;
@@ -23,16 +23,26 @@ st.markdown("""
         radial-gradient(circle at 50% 80%, rgba(239, 68, 68, 0.1) 0%, transparent 35%);
     background-attachment: fixed;
 }
-
+ 
 html, body, [class*="css"] { 
     font-family: 'Prompt', 'Inter', sans-serif; 
     color: #F3F4F6;
 }
-
+ 
+/* Back link */
+.back-link {
+    display: inline-block;
+    margin: 20px 0 0 4%;
+    color: #F87171 !important;
+    text-decoration: none !important;
+    font-weight: 500;
+}
+.back-link:hover { color: #FECDD3 !important; }
+ 
 /* Hero Section */
 .hero { 
     text-align: center; 
-    padding: 50px 20px 20px 20px; 
+    padding: 30px 20px 20px 20px; 
 }
 .hero h1 {
     font-family: 'Inter', 'Prompt', sans-serif;
@@ -51,7 +61,7 @@ html, body, [class*="css"] {
     margin-top: 0; 
     font-weight: 300;
 }
-
+ 
 /* Profile Photo Wrapper */
 .profile-photo-wrap {
     display: flex;
@@ -74,7 +84,7 @@ html, body, [class*="css"] {
     transform: scale(1.03);
     box-shadow: 0 0 50px rgba(225, 29, 72, 0.6);
 }
-
+ 
 /* Profile Card */
 .profile-card {
     max-width: 450px;
@@ -107,11 +117,11 @@ html, body, [class*="css"] {
 .info-row:first-of-type { border-top: none; }
 .info-row span.label { color: #9CA3AF; font-weight: 400; }
 .info-row span.value { font-weight: 600; color: #F87171; letter-spacing: 0.5px; }
-
+ 
 /* Hide default Streamlit elements */
 footer, #MainMenu { visibility: hidden; }
 [data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"] { visibility: visible !important; }
-
+ 
 /* Sidebar Styling */
 [data-testid="stSidebar"] {
     background: #0F0707 !important;
@@ -153,13 +163,13 @@ footer, #MainMenu { visibility: hidden; }
     border-left: 3px solid #EF4444;
     font-weight: 600;
 }
-
+ 
 /* เปลี่ยนข้อความเมนู: app -> หน้าหลัก, about -> ผู้พัฒนา */
 [data-testid="stSidebarNav"] li:nth-child(1) a * { font-size: 0 !important; }
 [data-testid="stSidebarNav"] li:nth-child(1) a::after { content: "🏠 หน้าหลัก"; font-size: 0.95rem !important; }
 [data-testid="stSidebarNav"] li:nth-child(2) a * { font-size: 0 !important; }
 [data-testid="stSidebarNav"] li:nth-child(2) a::after { content: "🧑‍💻 ผู้พัฒนา"; font-size: 0.95rem !important; }
-
+ 
 /* Footer */
 .custom-footer {
     text-align: center;
@@ -171,14 +181,19 @@ footer, #MainMenu { visibility: hidden; }
 }
 </style>
 """, unsafe_allow_html=True)
-
+ 
+st.markdown(
+    '<a class="back-link" href="/" target="_self">← กลับหน้าหลัก</a>',
+    unsafe_allow_html=True,
+)
+ 
 st.markdown("""
 <div class="hero">
     <h1>ผู้พัฒนา</h1>
     <p>ข้อมูลผู้จัดทำโปรเจค Recommend_car</p>
 </div>
 """, unsafe_allow_html=True)
-
+ 
 # โหลดรูปภาพ
 photo_path = Path(__file__).resolve().parent.parent / "assets" / "024.jpg"
 try:
@@ -192,7 +207,7 @@ except FileNotFoundError:
         '<div class="profile-photo-wrap"><div style="width:200px;height:200px;border-radius:50%;background:#180C0C;border:3px solid #EF4444;display:flex;align-items:center;justify-content:center;font-size:4rem;">🧑‍💻</div></div>',
         unsafe_allow_html=True,
     )
-
+ 
 st.markdown("""
 <div class="profile-card">
     <h2>จตุรภัทร สถาปิตานนท์</h2>
@@ -206,7 +221,7 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
-
+ 
 st.markdown("""
 <div class="custom-footer">
     Made with ❤️️ using Streamlit · Recommend_car Projects 2026
