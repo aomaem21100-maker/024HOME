@@ -268,7 +268,7 @@ APPS = [
 "tag": "Canva ",
 "grad": "g4",}
 
- {"icon": "🎨",
+ {"icon": "",
 "title": "แบบฝึกหัด",
 "desc": "แบบฝึกหัด",
 "url": "https://canva.link/6sdssxnz2wcjzi4",
