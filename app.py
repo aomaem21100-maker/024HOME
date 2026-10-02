@@ -265,7 +265,7 @@ APPS = [
 "title": "canva นำเสนอ",
 "desc": "Canva",
 "url": "https://canva.link/713sawc3mr83jej",
-"tag": "LIVE APP",
+"tag": "Canva ",
 "grad": "g4",}
 ]
  
