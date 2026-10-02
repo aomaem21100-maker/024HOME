@@ -261,14 +261,12 @@ APPS = [
         "tag": "LIVE APP",
         "grad": "g3",
     },
- {
-        "icon": "🎯",
-        "title": "canva นำเสนอ",
-        "desc": "Canva",
-        "url": "https://canva.link/713sawc3mr83jej",
-        "tag": "LIVE APP",
-        "grad": "g4",
-    },
+ {"icon": "🎨",
+"title": "canva นำเสนอ",
+"desc": "Canva",
+"url": "https://canva.link/713sawc3mr83jej",
+"tag": "LIVE APP",
+"grad": "g4",}
 ]
  
 MAIN_URL = APPS[2]["url"]
