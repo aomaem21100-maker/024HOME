@@ -261,19 +261,22 @@ APPS = [
         "tag": "LIVE APP",
         "grad": "g3",
     },
- {"icon": "🎨",
-"title": "canva นำเสนอ",
-"desc": "Canva",
-"url": "https://canva.link/713sawc3mr83jej",
-"tag": "Canva ",
-"grad": "g4",}
-
- {"icon": "",
-"title": "แบบฝึกหัด",
-"desc": "แบบฝึกหัด",
-"url": "https://canva.link/6sdssxnz2wcjzi4",
-"tag": "Canva ",
-"grad": "g5",}
+    {
+        "icon": "🎨",
+        "title": "Canva นำเสนอ",
+        "desc": "สไลด์นำเสนอโปรเจกต์",
+        "url": "https://canva.link/713sawc3mr83jej",
+        "tag": "CANVA",
+        "grad": "g4",
+    },   # <-- ต้องมี comma ตรงนี้
+    {
+        "icon": "📝",
+        "title": "แบบฝึกหัด",
+        "desc": "แบบฝึกหัดประกอบการนำเสนอ",
+        "url": "https://canva.link/6sdssxnz2wcjzi4",
+        "tag": "CANVA",
+        "grad": "g5",
+    },
 ]
  
 MAIN_URL = APPS[2]["url"]
