@@ -1,16 +1,19 @@
 import streamlit as st
- 
+
 st.set_page_config(
     page_title="Recommend_car",
     page_icon="🚗",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
- 
+
+# =========================================================
+# CSS
+# =========================================================
 CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Prompt:wght@300;400;500;600;700&display=swap');
- 
+
 :root {
     --nf-red: #E50914;
     --nf-red-dark: #B20710;
@@ -18,25 +21,37 @@ CSS = """
     --nf-text: #FFFFFF;
     --nf-muted: #B3B3B3;
 }
- 
-.stApp { background: var(--nf-bg); }
- 
+
+.stApp {
+    background: var(--nf-bg);
+}
+
 html, body, [class*="css"] {
     font-family: 'Prompt', sans-serif;
     color: var(--nf-text);
 }
- 
-header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
- 
-/* ซ่อน sidebar ทั้งหมด เพราะใช้ navbar เองแทน */
-[data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"] { display: none !important; }
- 
+
+header[data-testid="stHeader"],
+footer,
+#MainMenu {
+    display: none !important;
+}
+
+/* ซ่อน Sidebar */
+[data-testid="stSidebar"],
+[data-testid="stSidebarCollapsedControl"] {
+    display: none !important;
+}
+
 .block-container {
     padding: 0 0 40px 0 !important;
     max-width: 100% !important;
 }
- 
-/* ---------- Navbar ---------- */
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
 .nav {
     position: sticky;
     top: 0;
@@ -45,8 +60,13 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
     align-items: center;
     gap: 28px;
     padding: 16px 4%;
-    background: linear-gradient(180deg, rgba(0,0,0,.85) 0%, rgba(20,20,20,0) 100%);
+    background: linear-gradient(
+        180deg,
+        rgba(0,0,0,.9) 0%,
+        rgba(20,20,20,0) 100%
+    );
 }
+
 .logo {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 2.1rem;
@@ -54,14 +74,22 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
     color: var(--nf-red);
     line-height: 1;
 }
+
 .nav a {
     color: #E5E5E5;
     text-decoration: none !important;
     font-size: .9rem;
+    transition: .2s;
 }
-.nav a:hover { color: var(--nf-muted); }
- 
-/* ---------- Hero ---------- */
+
+.nav a:hover {
+    color: var(--nf-red);
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
 .hero {
     position: relative;
     min-height: 62vh;
@@ -69,13 +97,33 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
     display: flex;
     flex-direction: column;
     justify-content: center;
+
     background:
-        linear-gradient(77deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.35) 55%, rgba(0,0,0,0) 100%),
-        linear-gradient(0deg, var(--nf-bg) 0%, rgba(20,20,20,0) 30%),
-        radial-gradient(circle at 78% 35%, rgba(229,9,20,.55) 0%, rgba(229,9,20,0) 45%),
-        linear-gradient(135deg, #2a0306 0%, #0b0b0b 70%);
+        linear-gradient(
+            77deg,
+            rgba(0,0,0,.9) 0%,
+            rgba(0,0,0,.4) 55%,
+            rgba(0,0,0,0) 100%
+        ),
+        linear-gradient(
+            0deg,
+            var(--nf-bg) 0%,
+            rgba(20,20,20,0) 30%
+        ),
+        radial-gradient(
+            circle at 78% 35%,
+            rgba(229,9,20,.55) 0%,
+            rgba(229,9,20,0) 45%
+        ),
+        linear-gradient(
+            135deg,
+            #2a0306 0%,
+            #0b0b0b 70%
+        );
+
     overflow: hidden;
 }
+
 .hero .bg-car {
     position: absolute;
     right: 6%;
@@ -86,6 +134,7 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
     filter: blur(1px);
     pointer-events: none;
 }
+
 .hero .tag {
     color: var(--nf-red);
     font-weight: 700;
@@ -93,6 +142,7 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
     font-size: .85rem;
     margin-bottom: 10px;
 }
+
 .hero h1 {
     font-family: 'Bebas Neue', 'Prompt', sans-serif;
     font-size: clamp(3rem, 8vw, 6rem);
@@ -102,6 +152,7 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
     letter-spacing: 2px;
     text-shadow: 2px 4px 12px rgba(0,0,0,.6);
 }
+
 .hero p {
     max-width: 560px;
     font-size: 1.15rem;
@@ -110,6 +161,7 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
     margin: 0 0 26px 0;
     text-shadow: 1px 2px 6px rgba(0,0,0,.7);
 }
+
 .hero .meta {
     display: flex;
     gap: 12px;
@@ -118,14 +170,25 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
     font-size: .9rem;
     color: var(--nf-muted);
 }
-.hero .match { color: #46D369; font-weight: 700; }
+
+.hero .match {
+    color: #46D369;
+    font-weight: 700;
+}
+
 .hero .badge {
     border: 1px solid rgba(255,255,255,.4);
     padding: 0 6px;
     border-radius: 3px;
     font-size: .8rem;
 }
-.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.hero-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 .nbtn {
     display: inline-flex;
     align-items: center;
@@ -137,26 +200,53 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
     text-decoration: none !important;
     transition: all .2s ease;
 }
-.nbtn.play { background: #FFFFFF; color: #000000 !important; }
-.nbtn.play:hover { background: rgba(255,255,255,.75); }
-.nbtn.info { background: rgba(109,109,110,.7); color: #FFFFFF !important; }
-.nbtn.info:hover { background: rgba(109,109,110,.45); }
- 
-/* ---------- Rows ---------- */
-.row { padding: 0 4%; margin-top: 12px; }
+
+.nbtn.play {
+    background: #FFFFFF;
+    color: #000000 !important;
+}
+
+.nbtn.play:hover {
+    background: rgba(255,255,255,.75);
+    transform: scale(1.03);
+}
+
+.nbtn.info {
+    background: rgba(109,109,110,.7);
+    color: #FFFFFF !important;
+}
+
+.nbtn.info:hover {
+    background: rgba(109,109,110,.45);
+    transform: scale(1.03);
+}
+
+/* =========================================================
+   SYSTEM ROW
+========================================================= */
+
+.row {
+    padding: 0 4%;
+    margin-top: 12px;
+}
+
 .row-title {
     font-size: 1.35rem;
     font-weight: 600;
     margin: 26px 0 14px 0;
     color: #E5E5E5;
 }
+
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 14px;
 }
- 
-/* ---------- Poster cards ---------- */
+
+/* =========================================================
+   POSTER CARD
+========================================================= */
+
 .poster {
     position: relative;
     display: block;
@@ -165,14 +255,20 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
     overflow: hidden;
     text-decoration: none !important;
     color: #FFFFFF !important;
+
     box-shadow: 0 4px 14px rgba(0,0,0,.5);
-    transition: transform .3s ease, box-shadow .3s ease;
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease;
 }
+
 .poster:hover {
     transform: scale(1.06);
     z-index: 10;
     box-shadow: 0 18px 40px rgba(0,0,0,.8);
 }
+
 .poster .icon {
     position: absolute;
     right: 8%;
@@ -181,28 +277,43 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
     opacity: .9;
     filter: drop-shadow(0 6px 14px rgba(0,0,0,.6));
 }
+
 .poster .num {
     position: absolute;
     left: 14px;
     bottom: 6px;
+
     font-family: 'Bebas Neue', sans-serif;
     font-size: 6.5rem;
     line-height: 1;
+
     color: transparent;
     -webkit-text-stroke: 3px rgba(255,255,255,.55);
 }
+
 .poster .info-box {
     position: absolute;
-    left: 0; right: 0; bottom: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
     padding: 36px 16px 14px 16px;
-    background: linear-gradient(0deg, rgba(0,0,0,.92) 0%, rgba(0,0,0,0) 100%);
+
+    background:
+        linear-gradient(
+            0deg,
+            rgba(0,0,0,.95) 0%,
+            rgba(0,0,0,0) 100%
+        );
 }
+
 .poster h3 {
     margin: 0 0 4px 0;
     font-size: 1.1rem;
     font-weight: 600;
     text-align: right;
 }
+
 .poster p {
     margin: 0;
     font-size: .8rem;
@@ -210,32 +321,132 @@ header[data-testid="stHeader"], footer, #MainMenu { display: none !important; }
     line-height: 1.45;
     text-align: right;
 }
+
 .poster .go {
     position: absolute;
     top: 12px;
     left: 12px;
+
     background: var(--nf-red);
     padding: 2px 10px;
+
     border-radius: 3px;
+
     font-size: .72rem;
     font-weight: 700;
     letter-spacing: 1px;
 }
-.g1 { background: linear-gradient(135deg, #E50914 0%, #4a0408 100%); }
-.g2 { background: linear-gradient(135deg, #831010 0%, #1a1a1a 100%); }
-.g3 { background: linear-gradient(135deg, #b20710 0%, #0f0f0f 100%); }
- 
+
+/* =========================================================
+   GRADIENTS
+========================================================= */
+
+.g1 {
+    background: linear-gradient(
+        135deg,
+        #E50914 0%,
+        #4a0408 100%
+    );
+}
+
+.g2 {
+    background: linear-gradient(
+        135deg,
+        #831010 0%,
+        #1a1a1a 100%
+    );
+}
+
+.g3 {
+    background: linear-gradient(
+        135deg,
+        #b20710 0%,
+        #0f0f0f 100%
+    );
+}
+
+.g4 {
+    background: linear-gradient(
+        135deg,
+        #6c2bd9 0%,
+        #20103d 100%
+    );
+}
+
+.g5 {
+    background: linear-gradient(
+        135deg,
+        #087f5b 0%,
+        #0b3026 100%
+    );
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
 .nf-footer {
     margin: 60px 4% 0 4%;
     padding-top: 24px;
+
     border-top: 1px solid #333333;
+
     color: #757575;
     font-size: .85rem;
     text-align: center;
 }
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .nav {
+        gap: 14px;
+        padding: 14px 5%;
+        flex-wrap: wrap;
+    }
+
+    .logo {
+        width: 100%;
+        font-size: 1.8rem;
+    }
+
+    .nav a {
+        font-size: .8rem;
+    }
+
+    .hero {
+        min-height: 70vh;
+        padding: 70px 6% 60px 6%;
+    }
+
+    .hero .bg-car {
+        right: -15%;
+        font-size: 10rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .poster:hover {
+        transform: scale(1.02);
+    }
+}
 </style>
 """
- 
+
+
+# =========================================================
+# APPS / SYSTEMS
+# =========================================================
+
 APPS = [
     {
         "icon": "🚗",
@@ -245,6 +456,7 @@ APPS = [
         "tag": "NOTEBOOK",
         "grad": "g1",
     },
+
     {
         "icon": "📊",
         "title": "วิเคราะห์ข้อมูลรถยนต์",
@@ -253,6 +465,7 @@ APPS = [
         "tag": "NOTEBOOK",
         "grad": "g2",
     },
+
     {
         "icon": "🎯",
         "title": "ระบบแนะนำรถยนต์",
@@ -261,71 +474,211 @@ APPS = [
         "tag": "LIVE APP",
         "grad": "g3",
     },
- {"icon": "🎨",
-"title": "canva นำเสนอ",
-"desc": "Canva",
-"url": "https://canva.link/713sawc3mr83jej",
-"tag": "Canva ",
-"grad": "g4",}
 
- {"icon": "",
-"title": "แบบฝึกหัด",
-"desc": "แบบฝึกหัด",
-"url": "https://canva.link/6sdssxnz2wcjzi4",
-"tag": "Canva ",
-"grad": "g5",}
+    {
+        "icon": "🎨",
+        "title": "Canva นำเสนอ",
+        "desc": "สื่อสำหรับนำเสนอระบบ Recommend_car",
+        "url": "https://canva.link/713sawc3mr83jej",
+        "tag": "CANVA",
+        "grad": "g4",
+    },
+
+    {
+        "icon": "📝",
+        "title": "แบบฝึกหัด",
+        "desc": "แบบฝึกหัดและกิจกรรมที่เกี่ยวข้องกับระบบ",
+        "url": "https://canva.link/6sdssxnz2wcjzi4",
+        "tag": "CANVA",
+        "grad": "g5",
+    },
 ]
- 
+
+
+# =========================================================
+# URL
+# =========================================================
+
 MAIN_URL = APPS[2]["url"]
 FIRST_URL = APPS[0]["url"]
- 
-# HTML ทั้งหมดเขียนชิดซ้าย เพื่อไม่ให้ Markdown มองเป็น code block
+
+
+# =========================================================
+# HERO
+# =========================================================
+
 hero = f"""
 <div class="nav">
-<div class="logo">RECOMMEND_CAR</div>
-<a href="/" target="_self">หน้าแรก</a>
-<a href="#systems">ระบบทั้งหมด</a>
-<a href="/about" target="_self">ผู้พัฒนา</a>
+
+    <div class="logo">
+        RECOMMEND_CAR
+    </div>
+
+    <a href="/" target="_self">
+        หน้าแรก
+    </a>
+
+    <a href="#systems">
+        ระบบทั้งหมด
+    </a>
+
+    <a href="/about" target="_self">
+        ผู้พัฒนา
+    </a>
+
 </div>
+
+
 <div class="hero">
-<div class="bg-car">🚗</div>
-<div class="tag">GRAPH DATABASE ORIGINAL</div>
-<h1>RECOMMEND_CAR</h1>
-<div class="meta">
-<span class="match">แม่นยำ 98%</span>
-<span>2026</span>
-<span class="badge">3 ระบบ</span>
-<span>Graph · Neo4j · Cypher</span>
-</div>
-<p>ระบบแนะนำรถยนต์จากข้อมูลและความสัมพันธ์ของรถยนต์ ค้นหารถที่ใช่จากเครือข่ายเพื่อนและสิ่งที่คนรอบตัวคุณขับ</p>
-<div class="hero-btns">
-<a class="nbtn play" href="{MAIN_URL}" target="_blank">▶ เริ่มใช้งาน</a>
-<a class="nbtn info" href="{FIRST_URL}" target="_blank">ⓘ ข้อมูลเพิ่มเติม</a>
-</div>
+
+    <div class="bg-car">
+        🚗
+    </div>
+
+    <div class="tag">
+        GRAPH DATABASE ORIGINAL
+    </div>
+
+    <h1>
+        RECOMMEND_CAR
+    </h1>
+
+    <div class="meta">
+
+        <span class="match">
+            แม่นยำ 98%
+        </span>
+
+        <span>
+            2026
+        </span>
+
+        <span class="badge">
+            5 ระบบ
+        </span>
+
+        <span>
+            Graph · Neo4j · Cypher
+        </span>
+
+    </div>
+
+    <p>
+        ระบบแนะนำรถยนต์จากข้อมูลและความสัมพันธ์ของรถยนต์
+        ค้นหารถที่ใช่จากเครือข่ายข้อมูลและความต้องการของผู้ใช้
+    </p>
+
+    <div class="hero-btns">
+
+        <a
+            class="nbtn play"
+            href="{MAIN_URL}"
+            target="_blank"
+        >
+            ▶ เริ่มใช้งาน
+        </a>
+
+        <a
+            class="nbtn info"
+            href="{FIRST_URL}"
+            target="_blank"
+        >
+            ⓘ ข้อมูลเพิ่มเติม
+        </a>
+
+    </div>
+
 </div>
 """
- 
+
+
+# =========================================================
+# CREATE CARDS
+# =========================================================
+
 cards = ""
-for i, a in enumerate(APPS, start=1):
+
+for i, app in enumerate(APPS, start=1):
+
     cards += (
-        f'<a class="poster {a["grad"]}" href="{a["url"]}" target="_blank">'
-        f'<span class="go">{a["tag"]}</span>'
-        f'<span class="icon">{a["icon"]}</span>'
-        f'<span class="num">{i}</span>'
-        f'<div class="info-box"><h3>{a["title"]}</h3><p>{a["desc"]}</p></div>'
-        f"</a>"
+        f'<a class="poster {app["grad"]}" '
+        f'href="{app["url"]}" target="_blank">'
+
+        f'<span class="go">'
+        f'{app["tag"]}'
+        f'</span>'
+
+        f'<span class="icon">'
+        f'{app["icon"]}'
+        f'</span>'
+
+        f'<span class="num">'
+        f'{i}'
+        f'</span>'
+
+        f'<div class="info-box">'
+
+        f'<h3>'
+        f'{app["title"]}'
+        f'</h3>'
+
+        f'<p>'
+        f'{app["desc"]}'
+        f'</p>'
+
+        f'</div>'
+
+        f'</a>'
     )
- 
+
+
+# =========================================================
+# ROW
+# =========================================================
+
 rows = (
     '<div class="row" id="systems">'
-    '<div class="row-title">รวมระบบ Recommend_car</div>'
-    f'<div class="grid">{cards}</div>'
-    "</div>"
+
+    '<div class="row-title">'
+    'รวมระบบ Recommend_car'
+    '</div>'
+
+    f'<div class="grid">'
+    f'{cards}'
+    f'</div>'
+
+    '</div>'
 )
- 
-footer = '<div class="nf-footer">Made with ❤️ using Streamlit · Recommend_car 2026</div>'
- 
+
+
+# =========================================================
+# FOOTER
+# =========================================================
+
+footer = """
+<div class="nf-footer">
+    Made with ❤️ using Streamlit · Recommend_car 2026
+</div>
+"""
+
+
+# =========================================================
+# DISPLAY
+# =========================================================
+
 st.markdown(CSS, unsafe_allow_html=True)
-st.markdown(hero, unsafe_allow_html=True)
-st.markdown(rows, unsafe_allow_html=True)
-st.markdown(footer, unsafe_allow_html=True)
+
+st.markdown(
+    hero,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    rows,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    footer,
+    unsafe_allow_html=True
+)
