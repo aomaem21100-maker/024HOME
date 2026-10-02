@@ -267,6 +267,13 @@ APPS = [
 "url": "https://canva.link/713sawc3mr83jej",
 "tag": "Canva ",
 "grad": "g4",}
+
+ {"icon": "🎨",
+"title": "แบบฝึกหัด",
+"desc": "แบบฝึกหัด",
+"url": "https://canva.link/6sdssxnz2wcjzi4",
+"tag": "Canva ",
+"grad": "g4",}
 ]
  
 MAIN_URL = APPS[2]["url"]
